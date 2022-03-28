@@ -4,3 +4,17 @@
 *.ipr
 *.iws
 out/
+
+##----------QT----------
+*.jsc
+*.log
+*.pro
+*.pro.user
+*.qmake.stash
+*.qmlc
+*.so
+*.trace
+*.vagrant
+.DS_Store
+Mfile*
+qtbox
