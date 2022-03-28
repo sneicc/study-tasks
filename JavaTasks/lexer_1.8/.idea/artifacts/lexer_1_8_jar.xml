@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="lexer_1.8:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/lexer_1_8_jar</output-path>
-    <root id="archive" name="lexer_1.8.jar">
-      <element id="module-output" name="lexer_1.8" />
-    </root>
-  </artifact>
-</component>
