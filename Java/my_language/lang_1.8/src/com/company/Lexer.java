@@ -9,7 +9,8 @@ import java.util.regex.Pattern;
 public class Lexer {
 
     Lexer(){}
-    public static List<Token> defType(String content){
+
+    public List<Token> defType(String content){
         TokenMatch tokenMatch= new TokenMatch();
         List<Token> list = new ArrayList<>();
         int err =0;
