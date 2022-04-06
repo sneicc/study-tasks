@@ -14,6 +14,11 @@ public class Main {
         lexer.defType(content).stream()
                 .forEach(l -> System.out.println(l.content+" "+l.type));
 
+        Parser parser = new Parser();
+        parser.checkOrder(lexer.defType(content)).stream()
+                .forEach(l -> System.out.println(l));
+
+
     }
 
 }
