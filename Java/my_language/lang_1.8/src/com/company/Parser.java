@@ -11,10 +11,11 @@ public class Parser {
     private Map<Pattern, String> regexMap = new HashMap<Pattern, String>();
 
     Parser(){
-        String operator = "\\sOPPL|OPMIN\\s";
-        String value = "\\sVAR|DIGIT\\s";
-        //String expr = "(DTINT | DTDB)? VAR OPASS " + value + operator + value + "SC ";
-        String expr = "(DTINT|DTDB) VAR OPASS (VAR|DIGIT) (OPPL|OPMIN) (VAR|DIGIT) SC\\s?";
+        String operator = "(OPPL|OPMIN) ";
+        String value = "(VAR|DIGIT) ";
+        String dataType = "(DTINT|DTDB)? ";
+        String expr = dataType +"VAR OPASS " + value + operator + value + "SC\\s?";
+        //String expr = "(DTINT|DTDB) VAR OPASS (VAR|DIGIT) (OPPL|OPMIN) (VAR|DIGIT) SC\\s?";
         this.regexMap.put(Pattern.compile(expr), "expr");
 
     }
