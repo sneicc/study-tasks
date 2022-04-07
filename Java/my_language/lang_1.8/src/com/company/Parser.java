@@ -14,11 +14,12 @@ public class Parser {
         String operator = "(OPPL|OPMIN) ";
         String value = "(VAR|DIGIT) ";
         String dataType = "(DTINT|DTDB)? ";
-        //String exprVal = "(LBR (VAR|DIGIT)(( (OPPL|OPMIN) (VAR|DIGIT))+)? RBR)|((VAR|DIGIT)(( (OPPL|OPMIN) (VAR|DIGIT))+)?) ";
+        //String exprVal = "(LPR (VAR|DIGIT)(( (OPPL|OPMIN) (VAR|DIGIT))+)? RPR)|((VAR|DIGIT)(( (OPPL|OPMIN) (VAR|DIGIT))+)?) ";
         String exprVal = "((VAR|DIGIT)(( (OPPL|OPMIN) (VAR|DIGIT))+)?) ";
         String expr = "((DTINT|DTDB) )?VAR OPASS " + exprVal + "SC ";
         //String expr = "(DTINT|DTDB) VAR OPASS (VAR|DIGIT) (OPPL|OPMIN) (VAR|DIGIT) SC\\s?";
         this.regexMap.put(Pattern.compile(expr), "expr");
+
 
     }
     private String genCont(List<Token> tokenList){
@@ -43,7 +44,7 @@ public class Parser {
             for (Pattern pattern : this.regexMap.keySet()) {
                 match = pattern.matcher(content);
                 if (match.find()) {
-                    System.out.println(match.group() + " " + match.start());
+                    System.out.println(match.group() + " " + match.start()); //убрать после отладки
                     if(match.start()==0){
 
                         list.add(regexMap.get(pattern));
