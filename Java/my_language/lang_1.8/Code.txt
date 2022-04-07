@@ -1,0 +1,4 @@
+int test = a - banana;
+int one = 2 + 3.563 - tank - 8573;
+int ban = 4;
+kavo = 5;
