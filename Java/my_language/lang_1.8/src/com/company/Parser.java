@@ -14,8 +14,9 @@ public class Parser {
         String operator = "(OPPL|OPMIN) ";
         String value = "(VAR|DIGIT) ";
         String dataType = "(DTINT|DTDB)? ";
-        String exprval = "(VAR|DIGIT)(( " + operator + "(VAR|DIGIT)" + ")+)? ";
-        String expr = dataType +"VAR OPASS " + exprval + "SC ";
+        //String exprVal = "(LBR (VAR|DIGIT)(( (OPPL|OPMIN) (VAR|DIGIT))+)? RBR)|((VAR|DIGIT)(( (OPPL|OPMIN) (VAR|DIGIT))+)?) ";
+        String exprVal = "((VAR|DIGIT)(( (OPPL|OPMIN) (VAR|DIGIT))+)?) ";
+        String expr = "((DTINT|DTDB) )?VAR OPASS " + exprVal + "SC ";
         //String expr = "(DTINT|DTDB) VAR OPASS (VAR|DIGIT) (OPPL|OPMIN) (VAR|DIGIT) SC\\s?";
         this.regexMap.put(Pattern.compile(expr), "expr");
 
