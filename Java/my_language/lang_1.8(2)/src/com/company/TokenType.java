@@ -1,16 +1,15 @@
 package com.company;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class TokenType {
-    public Map<String, String> regexMap = new LinkedHashMap<String, String>();
+    public Map<String, String> regexMap = new HashMap<String, String>();
 
     public TokenType() {
-        regexMap.put("\\s*_int_\\s*","DTINT");
-        regexMap.put("\\s*_double_\\s*","DTDB");
-        regexMap.put("\\s*_while_\\s*","OPWH");
+        regexMap.put("\\s*int\\s+","DTINT");
+        regexMap.put("\\s*double\\s+","DTDB");
+        regexMap.put("\\s*while\\s+","OPWH");
         regexMap.put("\\s*=\\s*","OPASS");
         regexMap.put("\\s*\\(\\s*","LPR");
         regexMap.put("\\s*\\)\\s*","RPR");

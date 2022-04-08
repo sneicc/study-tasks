@@ -1,11 +1,14 @@
 package com.company;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Parser {
-    private Map<Pattern, String> regexMap = new LinkedHashMap<>();
+    private Map<Pattern, String> regexMap = new HashMap<Pattern, String>();
 
     Parser(){
         String operator = "(OPPL|OPMIN) ";
@@ -29,24 +32,23 @@ public class Parser {
 
     public List<String> checkOrder(List<Token> tokenList){
         String content = genCont(tokenList);
-        System.out.println(content);
         List<String> list = new ArrayList<>();
-        Matcher m;
+        Matcher match;
         int err =0;
         while(content.length() != 0) {
             if(err==1){
-                System.out.println("\u001B[33m"+"Syntax error !"+"\u001B[33m");
+                System.out.println("\u001B[33m" +"Syntax error !"+"\u001B[33m");
                 break;
             }
             err=1;
             for (Pattern pattern : this.regexMap.keySet()) {
-                m = pattern.matcher(content);
-                if (m.find()) {
-                    //System.out.println(m.group() + " " + m.start()); //убрать после отладки
-                    if(m.start()==0){
+                match = pattern.matcher(content);
+                if (match.find()) {
+                    System.out.println(match.group() + " " + match.start()); //убрать после отладки
+                    if(match.start()==0){
 
                         list.add(regexMap.get(pattern));
-                        content = content.substring(m.end()-m.start());
+                        content = content.substring(match.end()-match.start());
                         err=0;
                         break;
                     }

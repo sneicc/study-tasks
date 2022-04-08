@@ -1,4 +1,2 @@
-int test = a - banana;
-int one = 2 + 3.563 - tank - 8573;
-int ban = 4;
-kavo = 5;
+_int_ kaktak = kavo + int;
+_double_double=5;
