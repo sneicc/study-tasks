@@ -12,11 +12,18 @@ public class Parser {
         String value = "(VAR|DIGIT) ";
         String dataType = "(DTINT|DTDB)? ";
         //String exprVal = "(LPR (VAR|DIGIT)(( (OPPL|OPMIN) (VAR|DIGIT))+)? RPR)|((VAR|DIGIT)(( (OPPL|OPMIN) (VAR|DIGIT))+)?) ";
-        String exprVal = "((VAR|DIGIT)(( (OPPL|OPMIN) (VAR|DIGIT))+)?) ";
+        String exprVal = "((VAR|DIGIT)(( (OPPL|OPMIN|OPDIV|OPMUL) (VAR|DIGIT))+)?) ";
         String expr = "((DTINT|DTDB) )?VAR OPASS " + exprVal + "SC ";
         //String expr = "(DTINT|DTDB) VAR OPASS (VAR|DIGIT) (OPPL|OPMIN) (VAR|DIGIT) SC\\s?";
         this.regexMap.put(Pattern.compile(expr), "expr");
 
+        String compExprVal = "(VAR|DIGIT)(( (OPEQ|OPMORE|OPLESS|OPMOEQ|OPLSEQ|OPAND|OPOR) (VAR|DIGIT))+) ";
+        String compExpr = "(DTBL )?VAR OPASS " + compExprVal + "SC ";
+        this.regexMap.put(Pattern.compile(compExpr), "compExpr");
+
+
+        String opWhile = "OPWH LPR "+compExprVal + "RPR LBR (((" + expr + ")|(" + compExpr + "))*)RBR ";
+        this.regexMap.put(Pattern.compile(opWhile), "opWhile");
 
     }
     private String genCont(List<Token> tokenList){

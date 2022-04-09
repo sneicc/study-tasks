@@ -10,8 +10,16 @@ public class TokenType {
     public TokenType() {
         regexMap.put("\\s*_int_\\s*","DTINT");
         regexMap.put("\\s*_double_\\s*","DTDB");
+        regexMap.put("\\s*_bool_\\s*","DTBL");
         regexMap.put("\\s*_while_\\s*","OPWH");
+        regexMap.put("\\s*==\\s*","OPEQ");
         regexMap.put("\\s*=\\s*","OPASS");
+        regexMap.put("\\s*>=\\s*","OPMOEQ");
+        regexMap.put("\\s*<=\\s*","OPLSEQ");
+        regexMap.put("\\s*>\\s*","OPMORE");
+        regexMap.put("\\s*<\\s*","OPLESS");
+        regexMap.put("\\s*&&\\s*","OPAND");
+        regexMap.put("\\s*\\|\\|\\s*","OPOR");
         regexMap.put("\\s*\\(\\s*","LPR");
         regexMap.put("\\s*\\)\\s*","RPR");
         regexMap.put("\\s*\\{\\s*","LBR");

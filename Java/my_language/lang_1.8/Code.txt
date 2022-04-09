@@ -1,2 +1,9 @@
-_int_ kaktak = kavo + int;
-_double_double=5;
+
+_while_(a < b){
+_bool_ k = t< 4;
+_bool_ f = j <p;
+_bool_ x = 12 < n;
+_bool_ l = ox < 0;
+_bool_ h = v < u;
+pasha = technik * xanax / kalmar;
+}
