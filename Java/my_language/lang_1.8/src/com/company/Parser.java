@@ -6,25 +6,10 @@ import java.util.regex.Pattern;
 
 public class Parser {
     private Map<Pattern, String> regexMap = new LinkedHashMap<>();
+    private int index;
 
     Parser(){
-        String operator = "(OPPL|OPMIN) ";
-        String value = "(VAR|DIGIT) ";
-        String dataType = "(DTINT|DTDB)? ";
-        //String exprVal = "(LPR (VAR|DIGIT)(( (OPPL|OPMIN) (VAR|DIGIT))+)? RPR)|((VAR|DIGIT)(( (OPPL|OPMIN) (VAR|DIGIT))+)?) ";
-        String exprVal = "((VAR|DIGIT)(( (OPPL|OPMIN|OPDIV|OPMUL) (VAR|DIGIT))+)?) ";
-        String expr = "((DTINT|DTDB) )?VAR OPASS " + exprVal + "SC ";
-        //String expr = "(DTINT|DTDB) VAR OPASS (VAR|DIGIT) (OPPL|OPMIN) (VAR|DIGIT) SC\\s?";
-        this.regexMap.put(Pattern.compile(expr), "expr");
-
-        String compExprVal = "(VAR|DIGIT)(( (OPEQ|OPMORE|OPLESS|OPMOEQ|OPLSEQ|OPAND|OPOR) (VAR|DIGIT))+) ";
-        String compExpr = "(DTBL )?VAR OPASS " + compExprVal + "SC ";
-        this.regexMap.put(Pattern.compile(compExpr), "compExpr");
-
-
-        String opWhile = "OPWH LPR "+compExprVal + "RPR LBR (((" + expr + ")|(" + compExpr + "))*)RBR ";
-        this.regexMap.put(Pattern.compile(opWhile), "opWhile");
-
+        this.index = 0;
     }
     private String genCont(List<Token> tokenList){
         String content = "";
@@ -34,34 +19,127 @@ public class Parser {
         return content;
     }
 
-    public List<String> checkOrder(List<Token> tokenList){
-        String content = genCont(tokenList);
-        System.out.println(content);
-        List<String> list = new ArrayList<>();
-        Matcher m;
-        int err =0;
-        while(content.length() != 0) {
-            if(err==1){
-                System.out.println("\u001B[33m"+"Syntax error !"+"\u001B[33m");
-                break;
-            }
-            err=1;
-            for (Pattern pattern : this.regexMap.keySet()) {
-                m = pattern.matcher(content);
-                if (m.find()) {
-                    //System.out.println(m.group() + " " + m.start()); //убрать после отладки
-                    if(m.start()==0){
-
-                        list.add(regexMap.get(pattern));
-                        content = content.substring(m.end()-m.start());
-                        err=0;
-                        break;
-                    }
-
-                }
-
-            }
+    private void nextToken(List<Token> tokenList) {
+        if (index + 1 < tokenList.size())
+            index++;
+        else{
+            System.out.println("Index error");
         }
-        return list;
+    }
+
+    private Token getNextToken(List<Token> tokenList) {
+        if (++index < tokenList.size())
+            return tokenList.get(index);
+        else{
+            System.out.println("Index error");
+            return new Token("END",null);
+        }
+    }
+
+    private int getNumber(List<Token> tokenList) {
+        return Integer.parseInt(tokenList.get(index).getContent());
+    }
+
+    public int expr(List<Token> tokenList){ //expr -> sum SC
+        int result = 0;
+        switch(tokenList.get(index).getType()){
+            case"LPR":
+            case"DIGIT":
+                result = sum(tokenList);
+                switch(getNextToken(tokenList).getType()){
+                    case"SC":
+                        break;
+                    default:
+                        System.out.println("expr error");
+                        break;
+                }
+                break;
+            default:
+                System.out.println("expr error");
+                break;
+        }
+        return result;
+    }
+
+    public int sum(List<Token> tokenList){ //sum -> mul|mul OPPL sum
+        int result = 0;
+        switch(tokenList.get(index).getType()){
+            case"LPR":
+            case"DIGIT":
+                result = mul(tokenList);
+                switch (getNextToken(tokenList).getType()){
+                    case"OPPL":
+                        nextToken(tokenList);
+                        result += sum(tokenList);
+                        break;
+                    case"RPR":
+                    case"SC":
+                        index--;
+                        break;
+                    default:
+                        System.out.println("sum error");
+                        break;
+                }
+                break;
+            case"SC":
+                break;
+            default:
+                System.out.println("sum error");
+                break;
+        }
+        return result;
+    }
+
+    public int mul(List<Token> tokenList){ //mul -> basic|basic OPMUL mul
+        int result = 0;
+        switch(tokenList.get(index).getType()){
+            case"LPR":
+            case"DIGIT":
+                result = basic(tokenList);
+                switch (getNextToken(tokenList).getType()){
+                    case"OPMUL":
+                        nextToken(tokenList);
+                        result *= mul(tokenList);
+                        break;
+                    case"RPR":
+                    case"OPPL":
+                    case"SC":
+                        index--;
+                        break;
+                    default:
+                        System.out.println("mul error");
+                        break;
+                }
+                break;
+            case"SC":
+                break;
+            default:
+                System.out.println("mul error");
+                break;
+        }
+        return result;
+    }
+
+    public int basic(List<Token> tokenList){ // basic -> DIGIT|LPR sum RPR
+        int result = 0;
+        switch(tokenList.get(index).getType()){
+            case"DIGIT":
+                result = getNumber(tokenList);
+                break;
+            case"LPR":
+                nextToken(tokenList);
+                result = sum(tokenList);
+                if(getNextToken(tokenList).getType() != "RPR"){
+                    System.out.println("basic error rpl");
+                    return -1;
+                }
+                break;
+            case"SC":
+                break;
+            default:
+                System.out.println("basic error");
+                break;
+        }
+        return result;
     }
 }

@@ -29,7 +29,7 @@ public class TokenType {
         regexMap.put("\\s*/\\s*","OPDIV");
         regexMap.put("\\s*\\*\\s*","OPMUL");
         regexMap.put("\\s*[A-Za-z]+[0-9]*\\s*","VAR");
-        regexMap.put("\\s*[0-9]+(.[0-9]+)?+\\s*","DIGIT");
+        regexMap.put("\\s*[0-9]+(\\.[0-9]+)?\\s*","DIGIT");
         regexMap.put("\\s*;\\s*","SC");
     }
 

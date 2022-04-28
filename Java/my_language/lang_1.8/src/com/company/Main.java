@@ -13,13 +13,8 @@ public class Main {
         Lexer lexer = new Lexer();
         lexer.defType(content).stream()
                 .forEach(l -> System.out.println(l.content+" "+l.type));
-
         Parser parser = new Parser();
-        parser.checkOrder(lexer.defType(content)).stream()
-                .forEach(l -> System.out.println(l));
-
-
-
+        System.out.println(parser.expr(lexer.defType(content)));
     }
 
 }

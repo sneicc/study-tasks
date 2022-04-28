@@ -15,7 +15,7 @@ public class Lexer {
         List<Token> list = new ArrayList<>();
         int err =0;
         Matcher match;
-        while(content.length()!=0) {
+        while(content.length() != 0) {
             if(err==1){
                 System.out.println("\u001B[31m" +"Syntax error !"+"\u001B[0m");
                 break;
@@ -25,14 +25,12 @@ public class Lexer {
                 match = pattern.matcher(content);
                 if (match.find()) {
                     if(match.start()==0){
-                        list.add(new Token(tokenMatch.matchMap.get(pattern),match.group()));
+                        list.add(new Token(tokenMatch.matchMap.get(pattern),match.group().replaceAll("\\s","")));
                         content = content.substring(match.end()-match.start());
                         err=0;
                         break;
                     }
-
                 }
-
             }
         }
         return list;

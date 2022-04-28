@@ -9,7 +9,7 @@ public class TokenMatch {
     TokenMatch(){
         TokenType TT = new TokenType();
         for (String key : TT.regexMap.keySet()){
-            matchMap.put(Pattern.compile(key),TT.regexMap.get(key));
+            matchMap.put(Pattern.compile(key), TT.regexMap.get(key));
         }
     }
 }
