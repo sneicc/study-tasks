@@ -36,6 +36,7 @@ public class Parser {
             index++;
         else{
             System.out.println("Index error");
+            System.exit(0);
         }
     }
 
@@ -44,6 +45,7 @@ public class Parser {
             return tokenList.get(index);
         else{
             System.out.println("Index error");
+            System.exit(0);
             return new Token("ERR",null);
         }
     }
@@ -64,12 +66,12 @@ public class Parser {
                         break;
                     default:
                         System.out.println("program error");
-                        break;
+                        System.exit(0);
                 }
                 break;
             default:
                 System.out.println("program error");
-                break;
+                System.exit(0);
         }
     }
 
@@ -81,8 +83,8 @@ public class Parser {
                     case"VAR":
                         String content = tokenList.get(index).getContent();
                         if(checkIntVar(content)){
-                            System.out.println("variable " + content + " already exists !" );
-                            break;
+                            System.out.println("variable '" + content + "' already exists !" );
+                            System.exit(0);
                         }
                         switch (getNextToken(tokenList).getType()){
                             case"OPASS":
@@ -96,23 +98,28 @@ public class Parser {
                                             case"SC":
                                                 break;
                                             default:
-                                                System.out.println("initInt error");
+                                                System.out.println("initInt error\n semicolon expected");
+                                                System.exit(0);
                                         }
                                         break;
                                     default:
-                                        System.out.println("initInt error");
+                                        System.out.println("initInt error\n expected an expression");
+                                        System.exit(0);
                                 }
                                 break;
                             default:
-                                System.out.println("initInt error");
+                                System.out.println("initInt error\n expected assign operator");
+                                System.exit(0);
                         }
                         break;
                     default:
-                        System.out.println("initInt error");
+                        System.out.println("initInt error\n expected name");
+                        System.exit(0);
                 }
                 break;
             default:
                 System.out.println("initInt error");
+                System.exit(0);
         }
     }
 
@@ -135,7 +142,7 @@ public class Parser {
                 break;
             default:
                 System.out.println("expr error");
-                break;
+                System.exit(0);
         }
         return result;
     }
@@ -158,14 +165,14 @@ public class Parser {
                         break;
                     default:
                         System.out.println("sum error");
-                        break;
+                        System.exit(0);
                 }
                 break;
             case"SC":
                 break;
             default:
                 System.out.println("sum error");
-                break;
+                System.exit(0);
         }
         return result;
     }
@@ -189,14 +196,14 @@ public class Parser {
                         break;
                     default:
                         System.out.println("sub error");
-                        break;
+                        System.exit(0);
                 }
                 break;
             case"SC":
                 break;
             default:
                 System.out.println("sub error");
-                break;
+                System.exit(0);
         }
         return result;
     }
@@ -221,14 +228,14 @@ public class Parser {
                         break;
                     default:
                         System.out.println("mul error");
-                        break;
+                        System.exit(0);
                 }
                 break;
             case"SC":
                 break;
             default:
                 System.out.println("mul error");
-                break;
+                System.exit(0);
         }
         return result;
     }
@@ -253,15 +260,15 @@ public class Parser {
                         index--;
                         break;
                     default:
-                        System.out.println("div error");
-                        break;
+                        System.out.println("error");
+                        System.exit(0);
                 }
                 break;
             case"SC":
                 break;
             default:
-                System.out.println("div error");
-                break;
+                System.out.println("error");
+                System.exit(0);
         }
         return result;
     }
@@ -277,17 +284,22 @@ public class Parser {
                 result = sum(tokenList);
                 if(getNextToken(tokenList).getType() != "RPR"){
                     System.out.println("basic error rpl");
-                    return 0;
+                    System.exit(0);
                 }
                 break;
             case"VAR":
-                result = getIntVar(tokenList.get(index).getContent());
+                try {
+                    result = getIntVar(tokenList.get(index).getContent());
+                } catch (NullPointerException e){
+                    System.out.println("variable '"+ tokenList.get(index).getContent() +"' is not initialized !");
+                    System.exit(0);
+                }
                 break;
             case"SC":
                 break;
             default:
                 System.out.println("basic error");
-                break;
+                System.exit(0);
         }
         return result;
     }
