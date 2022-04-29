@@ -61,12 +61,12 @@ public class Parser {
         return result;
     }
 
-    public int sum(List<Token> tokenList){ //sum -> mul|mul OPPL sum
+    public int sum(List<Token> tokenList){ //sum -> sub|sub OPPL sum
         int result = 0;
         switch(tokenList.get(index).getType()){
             case"LPR":
             case"DIGIT":
-                result = mul(tokenList);
+                result = sub(tokenList);
                 switch (getNextToken(tokenList).getType()){
                     case"OPPL":
                         nextToken(tokenList);
@@ -90,6 +90,36 @@ public class Parser {
         return result;
     }
 
+    public int sub(List<Token> tokenList){ //sub-> mul|mul OPMIN sub
+        int result = 0;
+        switch(tokenList.get(index).getType()){
+            case"LPR":
+            case"DIGIT":
+                result = mul(tokenList);
+                switch (getNextToken(tokenList).getType()){
+                    case"OPMIN":
+                        nextToken(tokenList);
+                        result -= sub(tokenList);
+                        break;
+                    case"RPR":
+                    case"OPPL":
+                    case"SC":
+                        index--;
+                        break;
+                    default:
+                        System.out.println("sub error");
+                        break;
+                }
+                break;
+            case"SC":
+                break;
+            default:
+                System.out.println("sub error");
+                break;
+        }
+        return result;
+    }
+
     public int mul(List<Token> tokenList){ //mul -> basic|basic OPMUL mul
         int result = 0;
         switch(tokenList.get(index).getType()){
@@ -103,6 +133,7 @@ public class Parser {
                         break;
                     case"RPR":
                     case"OPPL":
+                    case"OPMIN":
                     case"SC":
                         index--;
                         break;

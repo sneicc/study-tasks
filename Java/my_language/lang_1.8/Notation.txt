@@ -1,4 +1,5 @@
 expr -> sum SC
-sum -> mul|mul OPPL sum
+sum -> sub|sub OPPL sum
+sub-> mul|mul OPPL sub
 mul -> basic|basic OPMUL mul
 basic -> DIGIT|LPR sum RPR
