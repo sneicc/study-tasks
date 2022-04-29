@@ -13,6 +13,7 @@ public class TokenType {
         regexMap.put("\\s*_bool_\\s*","DTBL");
         regexMap.put("\\s*_while_\\s*","OPWH");
         regexMap.put("\\s*_end_\\s*","END");
+        regexMap.put("\\s*_print_\\s*","PRINT");
         regexMap.put("\\s*==\\s*","OPEQ");
         regexMap.put("\\s*=\\s*","OPASS");
         regexMap.put("\\s*>=\\s*","OPMOEQ");

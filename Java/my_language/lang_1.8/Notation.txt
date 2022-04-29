@@ -1,4 +1,5 @@
 program -> initint|assign|(program END)
+print -> PRINT LPR expr RPR SC
 assign -> VAR OPASS expr SC
 initint -> DTINT VAR OPASS expr SC
 expr -> sum

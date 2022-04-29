@@ -1,7 +1,6 @@
 package com.company;
 
 import java.util.*;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Parser {
@@ -13,13 +12,6 @@ public class Parser {
         this.index = 0;
         this.intMap = new HashMap<>();
     }
-//    private String genCont(List<Token> tokenList){
-//        String content = "";
-//        for (int i = 0; i < tokenList.size(); i++){
-//            content += tokenList.get(i).getType() + " ";
-//        }
-//        return content;
-//    }
 
     private void createIntVar(String name, int value) {
         intMap.put(name, value);
@@ -58,6 +50,7 @@ public class Parser {
         switch (getNextToken(tokenList).getType()){
             case"DTINT":
             case"VAR":
+            case"PRINT":
                 program(tokenList);
                 break;
             case"END":
@@ -76,6 +69,10 @@ public class Parser {
                 break;
             case"VAR":
                 assign(tokenList);
+                programRec(tokenList);
+                break;
+            case"PRINT":
+                print(tokenList);
                 programRec(tokenList);
                 break;
             default:
@@ -132,7 +129,7 @@ public class Parser {
         }
     }
 
-    public void assign(List<Token> tokenList){
+    public void assign(List<Token> tokenList){ //assign -> VAR OPASS expr SC
         int result = 0;
         switch(tokenList.get(index).getType()){
             case"VAR":
@@ -173,6 +170,49 @@ public class Parser {
         }
     }
 
+    public void print(List<Token> tokenList){ //print -> PRINT LPR expr RPR SC
+        int result = 0;
+        switch(tokenList.get(index).getType()){
+            case"PRINT":
+                switch (getNextToken(tokenList).getType()){
+                    case"LPR":
+                        switch (getNextToken(tokenList).getType()){
+                            case"LPR":
+                            case"VAR":
+                            case"DIGIT":
+                                result = expr(tokenList);
+                                switch (getNextToken(tokenList).getType()){
+                                    case"RPR":
+                                        switch (getNextToken(tokenList).getType()){
+                                            case"SC":
+                                                break;
+                                            default:
+                                                System.out.println("print error");
+                                                System.exit(0);
+                                        }
+                                        break;
+                                    default:
+                                        System.out.println("print error");
+                                        System.exit(0);
+                                }
+                                break;
+                            default:
+                                System.out.println("print error");
+                                System.exit(0);
+                        }
+                        break;
+                    default:
+                        System.out.println("print error");
+                        System.exit(0);
+                }
+                break;
+            default:
+                System.out.println("print error");
+                System.exit(0);
+        }
+        System.out.println(result);
+    }
+
 
         public int expr(List<Token> tokenList){ //expr -> sum SC
         int result = 0;
@@ -181,13 +221,6 @@ public class Parser {
             case"VAR":
             case"DIGIT":
                 result = sum(tokenList);
-//                switch(getNextToken(tokenList).getType()){
-//                    case"SC":
-//                        break;
-//                    default:
-//                        System.out.println("expr error");
-//                        break;
-//                }
                 break;
             case"SC":
                 break;

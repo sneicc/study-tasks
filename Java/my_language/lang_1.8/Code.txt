@@ -1,4 +1,8 @@
 _int_ a = (5 + 5) / 2;
 _int_ b = (15 - a) * 2;
-a = 99;
+_print_(b);
+a = 80;
+_int_ c = (7 + 7);
+_print_(c);
+_print_(c+a/b);
 _end_

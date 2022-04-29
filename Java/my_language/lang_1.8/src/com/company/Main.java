@@ -18,9 +18,9 @@ public class Main {
         Parser parser = new Parser();
         //System.out.println(parser.expr(lexer.defType(content)));
         parser.program(tokenList);
-        for (String key: parser.intMap.keySet()) {
-            System.out.println(key +": " + parser.intMap.get(key));
-        }
+//        for (String key: parser.intMap.keySet()) {
+//            System.out.println(key +": " + parser.intMap.get(key));
+//        }
     }
 
 }
