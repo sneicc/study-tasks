@@ -1,4 +1,5 @@
-program -> initint|(program END)
+program -> initint|assign|(program END)
+assign -> VAR OPASS expr SC
 initint -> DTINT VAR OPASS expr SC
 expr -> sum
 sum -> sub|(sub OPPL sum)

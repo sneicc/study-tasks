@@ -54,20 +54,13 @@ public class Parser {
         return Integer.parseInt(tokenList.get(index).getContent());
     }
 
-    public void program(List<Token> tokenList){
-        switch(tokenList.get(index).getType()){
+    public void programRec(List<Token> tokenList){
+        switch (getNextToken(tokenList).getType()){
             case"DTINT":
-                initInt(tokenList);
-                switch (getNextToken(tokenList).getType()){
-                    case"DTINT":
-                        program(tokenList);
-                        break;
-                    case"END":
-                        break;
-                    default:
-                        System.out.println("program error");
-                        System.exit(0);
-                }
+            case"VAR":
+                program(tokenList);
+                break;
+            case"END":
                 break;
             default:
                 System.out.println("program error");
@@ -75,7 +68,23 @@ public class Parser {
         }
     }
 
-    public void initInt(List<Token> tokenList){
+    public void program(List<Token> tokenList){
+        switch(tokenList.get(index).getType()){
+            case"DTINT":
+                initInt(tokenList);
+                programRec(tokenList);
+                break;
+            case"VAR":
+                assign(tokenList);
+                programRec(tokenList);
+                break;
+            default:
+                System.out.println("program error");
+                System.exit(0);
+        }
+    }
+
+    public void initInt(List<Token> tokenList){ //initint -> DTINT VAR OPASS expr SC
         int result = 0;
         switch (tokenList.get(index).getType()){
             case"DTINT":
@@ -123,7 +132,49 @@ public class Parser {
         }
     }
 
-    public int expr(List<Token> tokenList){ //expr -> sum SC
+    public void assign(List<Token> tokenList){
+        int result = 0;
+        switch(tokenList.get(index).getType()){
+            case"VAR":
+                String content = tokenList.get(index).getContent();
+                if(!checkIntVar(content)){
+                    System.out.println("variable '" + content + "' does not exist !" );
+                    System.exit(0);
+                }
+                switch (getNextToken(tokenList).getType()){
+                    case"OPASS":
+                        switch (getNextToken(tokenList).getType()){
+                            case"LPR":
+                            case"VAR":
+                            case"DIGIT":
+                                result = expr(tokenList);
+                                createIntVar(content, result);
+                                switch (getNextToken(tokenList).getType()){
+                                    case"SC":
+                                        break;
+                                    default:
+                                        System.out.println("initInt error\n semicolon expected");
+                                        System.exit(0);
+                                }
+                                break;
+                            default:
+                                System.out.println("initInt error\n expected an expression");
+                                System.exit(0);
+                        }
+                        break;
+                    default:
+                        System.out.println("initInt error\n expected assign operator");
+                        System.exit(0);
+                }
+                break;
+            default:
+                System.out.println("assign error");
+                System.exit(0);
+        }
+    }
+
+
+        public int expr(List<Token> tokenList){ //expr -> sum SC
         int result = 0;
         switch(tokenList.get(index).getType()){
             case"LPR":
