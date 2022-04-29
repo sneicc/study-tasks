@@ -120,12 +120,12 @@ public class Parser {
         return result;
     }
 
-    public int mul(List<Token> tokenList){ //mul -> basic|basic OPMUL mul
+    public int mul(List<Token> tokenList){ //mul -> div|div OPMUL mul
         int result = 0;
         switch(tokenList.get(index).getType()){
             case"LPR":
             case"DIGIT":
-                result = basic(tokenList);
+                result = div(tokenList);
                 switch (getNextToken(tokenList).getType()){
                     case"OPMUL":
                         nextToken(tokenList);
@@ -146,6 +146,38 @@ public class Parser {
                 break;
             default:
                 System.out.println("mul error");
+                break;
+        }
+        return result;
+    }
+
+    public int div(List<Token> tokenList){ //div -> basic|basic OPDIV div
+        int result = 0;
+        switch(tokenList.get(index).getType()){
+            case"LPR":
+            case"DIGIT":
+                result = basic(tokenList);
+                switch (getNextToken(tokenList).getType()){
+                    case"OPDIV":
+                        nextToken(tokenList);
+                        result /= div(tokenList);
+                        break;
+                    case"RPR":
+                    case"OPPL":
+                    case"OPMIN":
+                    case"OPMUL":
+                    case"SC":
+                        index--;
+                        break;
+                    default:
+                        System.out.println("div error");
+                        break;
+                }
+                break;
+            case"SC":
+                break;
+            default:
+                System.out.println("div error");
                 break;
         }
         return result;
