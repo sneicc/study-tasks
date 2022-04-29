@@ -153,17 +153,17 @@ public class Parser {
                                     case"SC":
                                         break;
                                     default:
-                                        System.out.println("initInt error\n semicolon expected");
+                                        System.out.println("assign error\n semicolon expected");
                                         System.exit(0);
                                 }
                                 break;
                             default:
-                                System.out.println("initInt error\n expected an expression");
+                                System.out.println("assign error\n expected an expression");
                                 System.exit(0);
                         }
                         break;
                     default:
-                        System.out.println("initInt error\n expected assign operator");
+                        System.out.println("assign error\n expected assign operator");
                         System.exit(0);
                 }
                 break;
