@@ -1,6 +1,8 @@
-expr -> sum SC
-sum -> sub|sub OPPL sum
-sub-> mul|mul OPPL sub
-mul -> div|div OPMUL mul
-div -> basic|basic OPDIV div
-basic -> DIGIT|LPR sum RPR
+program -> initint|(program END)
+initint -> DTINT VAR OPASS expr SC
+expr -> sum
+sum -> sub|(sub OPPL sum)
+sub-> mul|(mul OPPL sub)
+mul -> div|(div OPMUL mul)
+div -> basic|(basic OPDIV div)
+basic -> DIGIT|(LPR sum RPR)

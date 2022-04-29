@@ -7,16 +7,28 @@ import java.util.regex.Pattern;
 public class Parser {
     private Map<Pattern, String> regexMap = new LinkedHashMap<>();
     private int index;
+    public Map<String, Integer> intMap;
 
     Parser(){
         this.index = 0;
+        this.intMap = new HashMap<>();
     }
-    private String genCont(List<Token> tokenList){
-        String content = "";
-        for (int i = 0; i < tokenList.size(); i++){
-            content += tokenList.get(i).getType() + " ";
-        }
-        return content;
+//    private String genCont(List<Token> tokenList){
+//        String content = "";
+//        for (int i = 0; i < tokenList.size(); i++){
+//            content += tokenList.get(i).getType() + " ";
+//        }
+//        return content;
+//    }
+
+    private void createIntVar(String name, int value) {
+        intMap.put(name, value);
+    }
+    private int getIntVar(String name) {
+        return intMap.get(name);
+    }
+    private boolean checkIntVar(String name) {
+            return intMap.containsKey(name);
     }
 
     private void nextToken(List<Token> tokenList) {
@@ -32,7 +44,7 @@ public class Parser {
             return tokenList.get(index);
         else{
             System.out.println("Index error");
-            return new Token("END",null);
+            return new Token("ERR",null);
         }
     }
 
@@ -40,19 +52,86 @@ public class Parser {
         return Integer.parseInt(tokenList.get(index).getContent());
     }
 
+    public void program(List<Token> tokenList){
+        switch(tokenList.get(index).getType()){
+            case"DTINT":
+                initInt(tokenList);
+                switch (getNextToken(tokenList).getType()){
+                    case"DTINT":
+                        program(tokenList);
+                        break;
+                    case"END":
+                        break;
+                    default:
+                        System.out.println("program error");
+                        break;
+                }
+                break;
+            default:
+                System.out.println("program error");
+                break;
+        }
+    }
+
+    public void initInt(List<Token> tokenList){
+        int result = 0;
+        switch (tokenList.get(index).getType()){
+            case"DTINT":
+                switch (getNextToken(tokenList).getType()){
+                    case"VAR":
+                        String content = tokenList.get(index).getContent();
+                        if(checkIntVar(content)){
+                            System.out.println("variable " + content + " already exists !" );
+                            break;
+                        }
+                        switch (getNextToken(tokenList).getType()){
+                            case"OPASS":
+                                switch (getNextToken(tokenList).getType()){
+                                    case"LPR":
+                                    case"VAR":
+                                    case"DIGIT":
+                                        result = expr(tokenList);
+                                        createIntVar(content, result);
+                                        switch (getNextToken(tokenList).getType()){
+                                            case"SC":
+                                                break;
+                                            default:
+                                                System.out.println("initInt error");
+                                        }
+                                        break;
+                                    default:
+                                        System.out.println("initInt error");
+                                }
+                                break;
+                            default:
+                                System.out.println("initInt error");
+                        }
+                        break;
+                    default:
+                        System.out.println("initInt error");
+                }
+                break;
+            default:
+                System.out.println("initInt error");
+        }
+    }
+
     public int expr(List<Token> tokenList){ //expr -> sum SC
         int result = 0;
         switch(tokenList.get(index).getType()){
             case"LPR":
+            case"VAR":
             case"DIGIT":
                 result = sum(tokenList);
-                switch(getNextToken(tokenList).getType()){
-                    case"SC":
-                        break;
-                    default:
-                        System.out.println("expr error");
-                        break;
-                }
+//                switch(getNextToken(tokenList).getType()){
+//                    case"SC":
+//                        break;
+//                    default:
+//                        System.out.println("expr error");
+//                        break;
+//                }
+                break;
+            case"SC":
                 break;
             default:
                 System.out.println("expr error");
@@ -65,6 +144,7 @@ public class Parser {
         int result = 0;
         switch(tokenList.get(index).getType()){
             case"LPR":
+            case"VAR":
             case"DIGIT":
                 result = sub(tokenList);
                 switch (getNextToken(tokenList).getType()){
@@ -94,6 +174,7 @@ public class Parser {
         int result = 0;
         switch(tokenList.get(index).getType()){
             case"LPR":
+            case"VAR":
             case"DIGIT":
                 result = mul(tokenList);
                 switch (getNextToken(tokenList).getType()){
@@ -124,6 +205,7 @@ public class Parser {
         int result = 0;
         switch(tokenList.get(index).getType()){
             case"LPR":
+            case"VAR":
             case"DIGIT":
                 result = div(tokenList);
                 switch (getNextToken(tokenList).getType()){
@@ -155,6 +237,7 @@ public class Parser {
         int result = 0;
         switch(tokenList.get(index).getType()){
             case"LPR":
+            case"VAR":
             case"DIGIT":
                 result = basic(tokenList);
                 switch (getNextToken(tokenList).getType()){
@@ -194,8 +277,11 @@ public class Parser {
                 result = sum(tokenList);
                 if(getNextToken(tokenList).getType() != "RPR"){
                     System.out.println("basic error rpl");
-                    return -1;
+                    return 0;
                 }
+                break;
+            case"VAR":
+                result = getIntVar(tokenList.get(index).getContent());
                 break;
             case"SC":
                 break;
