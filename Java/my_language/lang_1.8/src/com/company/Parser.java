@@ -1,7 +1,6 @@
 package com.company;
 
 import java.util.*;
-import java.util.regex.Pattern;
 
 public class Parser {
     private int index;
