@@ -1,7 +1,0 @@
-C:\Users\andre\source\repos\HM_Recursion\HM_Recursion\bin\Debug\HM_Recursion.exe.config
-C:\Users\andre\source\repos\HM_Recursion\HM_Recursion\bin\Debug\HM_Recursion.exe
-C:\Users\andre\source\repos\HM_Recursion\HM_Recursion\bin\Debug\HM_Recursion.pdb
-C:\Users\andre\source\repos\HM_Recursion\HM_Recursion\obj\Debug\HM_Recursion.csprojAssemblyReference.cache
-C:\Users\andre\source\repos\HM_Recursion\HM_Recursion\obj\Debug\HM_Recursion.csproj.CoreCompileInputs.cache
-C:\Users\andre\source\repos\HM_Recursion\HM_Recursion\obj\Debug\HM_Recursion.exe
-C:\Users\andre\source\repos\HM_Recursion\HM_Recursion\obj\Debug\HM_Recursion.pdb
