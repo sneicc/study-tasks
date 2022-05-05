@@ -61,7 +61,7 @@ public class Parser {
         }
     }
 
-    public void program(List<Token> tokenList){
+    public void program(List<Token> tokenList){ //program -> initint|assign|(program END)
         switch(tokenList.get(index).getType()){
             case"DTINT":
                 initInt(tokenList);
