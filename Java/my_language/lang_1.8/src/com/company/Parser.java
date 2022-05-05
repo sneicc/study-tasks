@@ -4,7 +4,6 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class Parser {
-    private Map<Pattern, String> regexMap = new LinkedHashMap<>();
     private int index;
     public Map<String, Integer> intMap;
 
