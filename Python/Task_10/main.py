@@ -20,7 +20,7 @@ def main(table):
         i[0] = temp[0]
 
     ans = list(map(list, zip(*dup_free)))
-    return list(reversed(ans))
+    return ans[::-1]
 
 
 table = [[None, 'liketin88@mail.ru:true', None, '0.46'],
