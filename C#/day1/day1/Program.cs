@@ -10,9 +10,11 @@ namespace day1
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(BreakCamelCase("camelCaseGood"));
+            //Console.WriteLine(BreakCamelCase("camelCaseGood"));
 
-            Anagrams("abba", new List<string> {"aabb", "abcd", "bbaa", "dada" });
+            //Anagrams("abba", new List<string> {"aabb", "abcd", "bbaa", "dada" });
+
+            Console.WriteLine(IsPalindrome(121));
         }
         public static List<string> Anagrams(string word, List<string> words)
         {
@@ -125,6 +127,23 @@ namespace day1
             arr = new int[arr.Length - 1];
             for (int i = 0; i < arr.Length; i++)
                 arr[i] = myArr[i];
+        }
+
+        public static bool IsPalindrome(int x)
+        {
+            List<int> list = new List<int>();
+            while (x != 0)
+            {
+                list.Add(x % 10);
+                x /= 10;
+            }
+
+            for (int i = 0, j = list.Count - 1; i < list.Count; i++, j--)
+            {
+                if (list[i] != list[j])
+                    return false;
+            }
+            return true;
         }
     }
 }
